@@ -1,13 +1,22 @@
 package clinica.medica.vitalcare.domain.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
 
-public class Paciente extends Pessoa {
+@Entity
+@Table(name = "pacientes")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class Paciente {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pessoa_id", referencedColumnName = "id")
+    private Pessoa pessoa_id;
 
     private String altura;
 

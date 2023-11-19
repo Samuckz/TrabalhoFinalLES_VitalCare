@@ -1,0 +1,34 @@
+package clinica.medica.vitalcare.services;
+
+import clinica.medica.vitalcare.domain.dtos.Pessoa.PessoaResponseDto;
+import clinica.medica.vitalcare.domain.dtos.Pessoa.CadastrarPessoaDto;
+import clinica.medica.vitalcare.domain.models.Pessoa;
+import clinica.medica.vitalcare.domain.repositories.PessoaRepository;
+import clinica.medica.vitalcare.utils.exceptions.register.RegisterValidation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class PessoaService {
+    @Autowired
+    PessoaRepository pessoaRepository;
+
+    @Autowired
+    EnderecoService enderecoService;
+    @Autowired
+    private List<RegisterValidation> validadores;
+
+
+    @Transactional
+    public PessoaResponseDto cadastrarPessoa(CadastrarPessoaDto dto){
+        validadores.forEach(v -> v.validar(dto));
+        var pessoa = new Pessoa(dto);
+        pessoaRepository.save(pessoa);
+        return new PessoaResponseDto(pessoa.getNome(), pessoa.getEmail());
+    }
+}

@@ -1,27 +1,43 @@
 package clinica.medica.vitalcare.domain.models;
 
+import clinica.medica.vitalcare.domain.dtos.Medico.CadastrarMedicoDto;
 import clinica.medica.vitalcare.utils.enums.Especialidade;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
+@Table(name = "medicos")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Medico extends Funcionario{
+public class Medico{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Especialidade espscialidade;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pessoa_id", referencedColumnName = "id")
+    private Pessoa pessoa_id;
+
+    private Especialidade especialidade;
 
     private String crm;
 
+    private boolean ativo = true;
 
+
+    public Medico(CadastrarMedicoDto dto) {
+        this.pessoa_id = new Pessoa(dto.pessoa());
+        this.especialidade = dto.especialidade();
+        this.crm = dto.crm();
+    }
+
+    public void deletar(){
+        this.ativo = false;
+    }
 }
