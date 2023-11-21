@@ -60,7 +60,7 @@ public class EnderecoService {
         if(endereco.isEmpty())
             return new ResponseEntity<>("O Cep informado não foi encontrado no sistema", HttpStatus.NOT_FOUND);
 
-        enderecoRepository.deleteById(endereco.get().getId());
+        enderecoRepository.delete(endereco.get());
 
         return new ResponseEntity<>("Endereço de CEP " + cep + " deletado com sucesso!", HttpStatus.OK);
     }

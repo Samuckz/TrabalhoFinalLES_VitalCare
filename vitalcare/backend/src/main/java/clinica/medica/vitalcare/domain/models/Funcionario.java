@@ -19,11 +19,11 @@ public class Funcionario{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long idFuncionario;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pessoa_id", referencedColumnName = "id")
-    private Pessoa pessoa_id;
+    @JoinColumn(name = "pessoa", referencedColumnName = "id")
+    private Pessoa pessoa;
 
     private LocalDateTime dataContrato;
 

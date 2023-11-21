@@ -18,24 +18,26 @@ public class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nome;
-
     private String telefone;
-
     private String email;
-
-    private String senha;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
-    private Endereco endereco;
+    private String cep;
+    private String logradouro;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private boolean ativo;
 
     public Pessoa(CadastrarPessoaDto dto) {
         this.nome = dto.nome();
         this.telefone = dto.telefone();
         this.email = dto.email();
-        this.senha = dto.senha();
-        this.endereco = new Endereco(dto.endereco());
+        this.cep = dto.cep();
+        this.logradouro = dto.logradouro();
+        this.bairro = dto.bairro();
+        this.cidade = dto.cidade();
+        this.estado = dto.estado();
+        this.ativo = true;
+
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
-    List<Medico> findAllByAtivoTrue();
+//    List<Medico> findAllByAtivoTrue();
 }

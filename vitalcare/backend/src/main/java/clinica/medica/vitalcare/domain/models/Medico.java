@@ -21,23 +21,10 @@ public class Medico{
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pessoa_id", referencedColumnName = "id")
-    private Pessoa pessoa_id;
+    @JoinColumn(name = "funcionario", referencedColumnName = "id")
+    private Funcionario funcionario;
 
     private Especialidade especialidade;
 
     private String crm;
-
-    private boolean ativo = true;
-
-
-    public Medico(CadastrarMedicoDto dto) {
-        this.pessoa_id = new Pessoa(dto.pessoa());
-        this.especialidade = dto.especialidade();
-        this.crm = dto.crm();
-    }
-
-    public void deletar(){
-        this.ativo = false;
-    }
 }
