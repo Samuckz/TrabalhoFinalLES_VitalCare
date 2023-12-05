@@ -33,11 +33,11 @@ public class Agenda {
     private Medico medico;
 
 
-    public Agenda(CadastrarAgendaDto dto, Medico medico) {
+    public Agenda(CadastrarAgendaDto dto, Medico medico, Paciente paciente) {
         this.data = dto.data();
         this.paciente = dto.nomePaciente();
-        this.email_paciente = dto.emailPaciente();
-        this.telefone_paciente = dto.telefonePaciente();
+        this.email_paciente = paciente.getPessoa().getEmail();
+        this.telefone_paciente = paciente.getPessoa().getTelefone();
         this.medico = medico;
     }
 }

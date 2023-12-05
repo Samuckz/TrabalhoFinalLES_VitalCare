@@ -17,7 +17,7 @@ public class AgendaController {
     AgendaService agendaService;
 
     @PostMapping("cadastrar")
-    public ResponseEntity cadastrarAgenda(@RequestBody CadastrarAgendaDto dto){
+    public ResponseEntity cadastrarAgenda(@RequestBody CadastrarAgendaDto dto) throws Exception {
         return agendaService.cadastrar(dto);
     }
 
@@ -27,7 +27,12 @@ public class AgendaController {
     }
 
     @GetMapping("agenda/{nome}")
-    public ResponseEntity<List<AgendaResponseDto>> listarAgendaPorPaciente(@PathVariable String nome){
+    public ResponseEntity<List<AgendaResponseDto>> listarAgendaPorPaciente(@PathVariable String nome) throws Exception {
         return agendaService.listarPorPaciente(nome);
     }
+
+//    @GetMapping("agendaMedico/{id}")
+//    public ResponseEntity<List<AgendaResponseDto>> listarAgendaPorMedico(@PathVariable Long medicoId) throws Exception {
+//        return agendaService.listarPorMedico(medicoId);
+//    }
 }

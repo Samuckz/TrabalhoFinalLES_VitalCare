@@ -8,11 +8,6 @@ import java.time.LocalDateTime;
 public record CadastrarAgendaDto(
         @NotNull LocalDateTime data,
         @NotBlank String nomePaciente,
-
-        @NotBlank String emailPaciente,
-
-        @NotBlank String telefonePaciente,
-
         @NotBlank Long medicoId
         ) {
 }
