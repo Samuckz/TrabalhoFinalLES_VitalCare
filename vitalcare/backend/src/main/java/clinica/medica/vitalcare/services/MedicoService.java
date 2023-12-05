@@ -1,50 +1,50 @@
-//package clinica.medica.vitalcare.services;
-//
-//import clinica.medica.vitalcare.domain.dtos.Medico.CadastrarMedicoDto;
-//import clinica.medica.vitalcare.domain.dtos.Medico.ResponseMedicoDto;
-//import clinica.medica.vitalcare.domain.models.Medico;
-//import clinica.medica.vitalcare.domain.models.Pessoa;
-//import clinica.medica.vitalcare.domain.repositories.MedicoRepository;
-//import clinica.medica.vitalcare.domain.repositories.PessoaRepository;
-//import clinica.medica.vitalcare.utils.exceptions.register.UniqueEmailValidation;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service
-//public class MedicoService {
-//
-//    @Autowired
-//    PessoaRepository pessoaRepository;
-//
-//    @Autowired
-//    MedicoRepository medicoRepository;
-//
-//    @Autowired
-//    UniqueEmailValidation uniqueEmailValidation;
-//
-//    @Autowired
-//    EnderecoService enderecoService;
-//
-//    @Autowired
-//    PessoaService pessoaService;
-//
-//    public ResponseEntity<Medico> cadastrar(CadastrarMedicoDto dto) {
-//        var medico = new Medico(dto);
-//        medicoRepository.save(medico);
-//        return new ResponseEntity<>(medico, HttpStatus.CREATED);
-//    }
-//
-//    public ResponseEntity<List<ResponseMedicoDto>> listarMedicos() {
-//        var medicos = medicoRepository.findAllByAtivoTrue();
-//        var response = medicos.stream().map(m -> {
-//            return new ResponseMedicoDto(m.getId(), m.getPessoa_id().getNome(), m.getEspecialidade());
-//        }).toList();
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
+package clinica.medica.vitalcare.services;
+
+import clinica.medica.vitalcare.domain.dtos.Medico.CadastrarMedicoDto;
+import clinica.medica.vitalcare.domain.dtos.Medico.ResponseMedicoDto;
+import clinica.medica.vitalcare.domain.models.Medico;
+import clinica.medica.vitalcare.domain.models.Pessoa;
+import clinica.medica.vitalcare.domain.repositories.MedicoRepository;
+import clinica.medica.vitalcare.domain.repositories.PessoaRepository;
+import clinica.medica.vitalcare.utils.exceptions.register.UniqueEmailValidation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class MedicoService {
+
+    @Autowired
+    PessoaRepository pessoaRepository;
+
+    @Autowired
+    MedicoRepository medicoRepository;
+
+    @Autowired
+    UniqueEmailValidation uniqueEmailValidation;
+
+    @Autowired
+    EnderecoService enderecoService;
+
+    @Autowired
+    PessoaService pessoaService;
+
+    public ResponseEntity<Medico> cadastrar(CadastrarMedicoDto dto) {
+        var medico = new Medico(dto);
+        medicoRepository.save(medico);
+        return new ResponseEntity<>(medico, HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<List<ResponseMedicoDto>> listarMedicos() {
+        var medicos = medicoRepository.findAll();
+        var response = medicos.stream().map(m -> {
+            return new ResponseMedicoDto(m.getId(), m.getFuncionario().getPessoa().getNome(), m.getEspecialidade());
+        }).toList();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 //
 //    public ResponseEntity getMedicoById(Long id) {
 //        var medico = medicoRepository.findById(id);
@@ -88,4 +88,4 @@
 //        return new ResponseEntity("Médico deletado com sucesso!", HttpStatus.OK);
 //
 //    }
-//}
+}

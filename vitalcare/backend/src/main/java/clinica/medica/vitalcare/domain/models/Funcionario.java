@@ -1,5 +1,6 @@
 package clinica.medica.vitalcare.domain.models;
 
+import clinica.medica.vitalcare.domain.dtos.Funcionario.CadastrarFuncionarioDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 public class Funcionario{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -29,4 +30,15 @@ public class Funcionario{
 
     private double salario;
 
+    private String senha;
+
+    public Funcionario(CadastrarFuncionarioDto dtoFuncionario) {
+        this.pessoa = new Pessoa(dtoFuncionario.pessoa());
+        this.dataContrato = dtoFuncionario.dataContrato();
+        this.salario = dtoFuncionario.salario();
+        if(senha != null){
+            this.senha = dtoFuncionario.senha();
+
+        }
+    }
 }

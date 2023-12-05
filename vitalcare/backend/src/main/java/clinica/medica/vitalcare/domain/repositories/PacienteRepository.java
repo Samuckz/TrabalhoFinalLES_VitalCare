@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
@@ -21,4 +22,5 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     List<Paciente> findAllByPessoaAtivoTrue();
 
+    //Optional<Paciente> findByName(String paciente);
 }

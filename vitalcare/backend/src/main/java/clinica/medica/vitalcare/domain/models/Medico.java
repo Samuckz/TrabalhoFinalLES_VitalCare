@@ -27,4 +27,10 @@ public class Medico{
     private Especialidade especialidade;
 
     private String crm;
+
+    public Medico(CadastrarMedicoDto dtoMedico) {
+        this.funcionario = new Funcionario(dtoMedico.funcionario());
+        this.especialidade = dtoMedico.especialidade();
+        this.crm = dtoMedico.crm();
+    }
 }
