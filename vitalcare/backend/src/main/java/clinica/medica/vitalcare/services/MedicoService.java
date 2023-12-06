@@ -3,10 +3,13 @@ package clinica.medica.vitalcare.services;
 import clinica.medica.vitalcare.domain.dtos.Medico.CadastrarMedicoDto;
 import clinica.medica.vitalcare.domain.dtos.Medico.ResponseMedicoDto;
 import clinica.medica.vitalcare.domain.models.Medico;
-import clinica.medica.vitalcare.domain.models.Pessoa;
+import clinica.medica.vitalcare.domain.models.Usuario;
 import clinica.medica.vitalcare.domain.repositories.MedicoRepository;
 import clinica.medica.vitalcare.domain.repositories.PessoaRepository;
-import clinica.medica.vitalcare.utils.exceptions.register.UniqueEmailValidation;
+import clinica.medica.vitalcare.domain.repositories.UsuarioRepository;
+import clinica.medica.vitalcare.utils.exceptions.register.Funcionario.RegisterValidation;
+import clinica.medica.vitalcare.utils.exceptions.register.Funcionario.UniqueEmailValidation;
+import clinica.medica.vitalcare.utils.exceptions.register.Medicos.RegisterValidationMedico;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,9 @@ public class MedicoService {
     MedicoRepository medicoRepository;
 
     @Autowired
+    UsuarioRepository usuarioRepository;
+
+    @Autowired
     UniqueEmailValidation uniqueEmailValidation;
 
     @Autowired
@@ -32,8 +38,20 @@ public class MedicoService {
     @Autowired
     PessoaService pessoaService;
 
+    @Autowired
+    private List<RegisterValidationMedico> validadoresMedico;
+
+    @Autowired
+    private List<RegisterValidation> validadoresFuncionario;
+
+
     public ResponseEntity<Medico> cadastrar(CadastrarMedicoDto dto) {
+        validadoresMedico.forEach(v -> v.validar(dto));
+        validadoresFuncionario.forEach(v -> v.validar(dto.funcionario()));
+
         var medico = new Medico(dto);
+        var user = new Usuario(dto.funcionario(), true);
+        usuarioRepository.save(user);
         medicoRepository.save(medico);
         return new ResponseEntity<>(medico, HttpStatus.CREATED);
     }

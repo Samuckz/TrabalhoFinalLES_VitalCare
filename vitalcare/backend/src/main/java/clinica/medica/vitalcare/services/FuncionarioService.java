@@ -2,12 +2,12 @@ package clinica.medica.vitalcare.services;
 
 import clinica.medica.vitalcare.domain.dtos.Funcionario.CadastrarFuncionarioDto;
 import clinica.medica.vitalcare.domain.dtos.Funcionario.FuncionarioResponseDto;
-import clinica.medica.vitalcare.domain.dtos.Paciente.PacienteResponseDto;
 import clinica.medica.vitalcare.domain.models.Funcionario;
+import clinica.medica.vitalcare.domain.models.Usuario;
 import clinica.medica.vitalcare.domain.repositories.FuncionarioRepository;
-import clinica.medica.vitalcare.domain.repositories.PacienteRepository;
+import clinica.medica.vitalcare.domain.repositories.UsuarioRepository;
+import clinica.medica.vitalcare.utils.exceptions.register.Funcionario.RegisterValidation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,9 +19,22 @@ public class FuncionarioService {
     @Autowired
     FuncionarioRepository funcionarioRepository;
 
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private List<RegisterValidation> validadoresFuncionario;
+
+    // === CRUD DE FUNCIONÁRIOS ===
+
     public ResponseEntity cadastrar(CadastrarFuncionarioDto dto) {
+
+        validadoresFuncionario.forEach(v -> v.validar(dto));
+
         Funcionario funcionario = new Funcionario(dto);
+        Usuario user = new Usuario(dto, false);
         funcionarioRepository.save(funcionario);
+        usuarioRepository.save(user);
         return new ResponseEntity(funcionario, HttpStatus.OK);
     }
 
@@ -50,4 +63,5 @@ public class FuncionarioService {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 }

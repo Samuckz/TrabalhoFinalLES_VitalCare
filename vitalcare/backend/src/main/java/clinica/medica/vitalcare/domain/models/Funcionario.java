@@ -36,9 +36,6 @@ public class Funcionario{
         this.pessoa = new Pessoa(dtoFuncionario.pessoa());
         this.dataContrato = dtoFuncionario.dataContrato();
         this.salario = dtoFuncionario.salario();
-        if(senha != null){
-            this.senha = dtoFuncionario.senha();
-
-        }
+        this.senha = dtoFuncionario.senha();
     }
 }
