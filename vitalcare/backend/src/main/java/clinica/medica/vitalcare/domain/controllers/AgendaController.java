@@ -31,8 +31,8 @@ public class AgendaController {
         return agendaService.listarPorPaciente(nome);
     }
 
-//    @GetMapping("agendaMedico/{id}")
-//    public ResponseEntity<List<AgendaResponseDto>> listarAgendaPorMedico(@PathVariable Long medicoId) throws Exception {
-//        return agendaService.listarPorMedico(medicoId);
-//    }
+    @GetMapping("agendaMedico/{id}")
+    public ResponseEntity listarAgendaPorMedico(@PathVariable Long medicoId) throws Exception {
+        return agendaService.listarPorMedico(medicoId);
+    }
 }

@@ -75,9 +75,9 @@ public class AgendaService {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    public ResponseEntity<List<AgendaResponseDto>> listarPorMedico(Long medicoId){
-//
-//
+    public ResponseEntity listarPorMedico(Long medicoId){
+
+
 //        var agendas = agendaRepository.findByMedicoId(medicoId);
 //        var response = agendas.stream().map(m -> {
 //            return new AgendaResponseDto(
@@ -88,6 +88,6 @@ public class AgendaService {
 //                    m.getMedico().getEspecialidade());
 //
 //        }).toList();
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
+        return new ResponseEntity<>("Medicos", HttpStatus.OK);
+    }
 }

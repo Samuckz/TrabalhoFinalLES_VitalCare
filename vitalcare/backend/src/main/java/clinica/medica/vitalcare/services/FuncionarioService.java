@@ -10,6 +10,7 @@ import clinica.medica.vitalcare.utils.exceptions.register.Funcionario.RegisterVa
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,14 +26,17 @@ public class FuncionarioService {
     @Autowired
     private List<RegisterValidation> validadoresFuncionario;
 
+    @Autowired
+    PasswordEncoder encoder;
+
     // === CRUD DE FUNCIONÁRIOS ===
 
     public ResponseEntity cadastrar(CadastrarFuncionarioDto dto) {
 
         validadoresFuncionario.forEach(v -> v.validar(dto));
-
         Funcionario funcionario = new Funcionario(dto);
         Usuario user = new Usuario(dto, false);
+        user.setSenha(encoder.encode(user.getSenha()));
         funcionarioRepository.save(funcionario);
         usuarioRepository.save(user);
         return new ResponseEntity(funcionario, HttpStatus.OK);
