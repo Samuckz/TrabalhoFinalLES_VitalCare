@@ -35,17 +35,20 @@ public class FuncionarioService {
 
         validadoresFuncionario.forEach(v -> v.validar(dto));
         Funcionario funcionario = new Funcionario(dto);
-        Usuario user = new Usuario(dto, false);
-        user.setSenha(encoder.encode(user.getSenha()));
-        funcionarioRepository.save(funcionario);
+        funcionario.setSenha(encoder.encode(funcionario.getSenha()));
+        Usuario user = new Usuario(dto, funcionario.getSenha(), false, null);
+        var func = funcionarioRepository.save(funcionario);
         usuarioRepository.save(user);
-        return new ResponseEntity(funcionario, HttpStatus.OK);
+
+        var response = new FuncionarioResponseDto(func.getId(), func.getPessoa().getNome(), func.getPessoa().getEmail(), func.getDataContrato());
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     public ResponseEntity<List<FuncionarioResponseDto>> listarFuncionarios() {
         var funcionarios = funcionarioRepository.findAll();
         var response = funcionarios.stream().map(m -> {
             return new FuncionarioResponseDto(
+                    m.getId(),
                     m.getPessoa().getNome(),
                     m.getPessoa().getEmail(),
                     m.getDataContrato());
@@ -60,6 +63,7 @@ public class FuncionarioService {
             throw new Exception("Funcionario não encontrado");
 
         var response = new FuncionarioResponseDto(
+                funcionario.get().getId(),
                 funcionario.get().getPessoa().getNome(),
                 funcionario.get().getPessoa().getEmail(),
                 funcionario.get().getDataContrato()

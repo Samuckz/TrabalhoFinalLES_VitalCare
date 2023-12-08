@@ -2,8 +2,9 @@ package clinica.medica.vitalcare.domain.controllers;
 
 import clinica.medica.vitalcare.domain.dtos.Agenda.AgendaResponseDto;
 import clinica.medica.vitalcare.domain.dtos.Agenda.CadastrarAgendaDto;
-import clinica.medica.vitalcare.domain.models.Agenda;
 import clinica.medica.vitalcare.services.AgendaService;
+import clinica.medica.vitalcare.utils.infra.security.TokenService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,8 @@ import java.util.List;
 public class AgendaController {
     @Autowired
     AgendaService agendaService;
+
+
 
     @PostMapping("cadastrar")
     public ResponseEntity cadastrarAgenda(@RequestBody CadastrarAgendaDto dto) throws Exception {
@@ -31,8 +34,8 @@ public class AgendaController {
         return agendaService.listarPorPaciente(nome);
     }
 
-    @GetMapping("agendaMedico/{id}")
-    public ResponseEntity listarAgendaPorMedico(@PathVariable Long medicoId) throws Exception {
-        return agendaService.listarPorMedico(medicoId);
+    @GetMapping("/agendaMedico")
+    public ResponseEntity listarAgendaPorMedico(HttpServletRequest request) throws Exception {
+        return agendaService.listarPorMedico(request);
     }
 }

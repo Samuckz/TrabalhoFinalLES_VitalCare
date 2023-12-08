@@ -30,10 +30,13 @@ public class Usuario implements UserDetails {
 
     private Boolean isMedico;
 
-    public Usuario(CadastrarFuncionarioDto dto, boolean isMedico) {
+    private Long medicoId;
+
+    public Usuario(CadastrarFuncionarioDto dto, String senhaCriptografada, boolean isMedico, Long IdMedico) {
         this.email = dto.pessoa().email();
-        this.senha = dto.senha();
+        this.senha = senhaCriptografada;
         this.isMedico = isMedico;
+        this.medicoId = IdMedico;
     }
 
     @Override

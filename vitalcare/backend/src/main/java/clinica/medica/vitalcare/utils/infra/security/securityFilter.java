@@ -40,6 +40,10 @@ public class securityFilter extends OncePerRequestFilter { // implementa a inter
         filterChain.doFilter(request, response);
     }
 
+    public String getToken(HttpServletRequest request){
+        return recuperarToken(request);
+    }
+
     private String recuperarToken(HttpServletRequest request) {
         var authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader != null){

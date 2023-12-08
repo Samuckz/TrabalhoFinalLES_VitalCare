@@ -36,7 +36,7 @@ public class securityConfiguration{
 //                        .requestMatchers( "/enderecos").hasRole("ROLE_MEDICO")
 //                        .requestMatchers( "/agenda").hasRole("ROLE_FUNCIONARIO")
 //                        .requestMatchers( "/agenda").hasRole("ROLE_MEDICO")
-                        .requestMatchers("/agendas/agendaMedico/{id}").hasRole("MEDICO")
+//                        .requestMatchers("/agendas/agendaMedico/{id}").hasRole("MEDICO")
                         .requestMatchers(HttpMethod.POST, "/auth").permitAll() // Login
                         .requestMatchers(HttpMethod.POST, "/agendas/cadastrar").permitAll() // Agendar Consulta
                         .requestMatchers(HttpMethod.POST, "/endereco/cadastrar").permitAll() // Cadastrar Endereco

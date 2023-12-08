@@ -26,5 +26,6 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
     @Query("SELECT p FROM Paciente p JOIN p.pessoa pe WHERE pe.nome = :nome")
     Optional<Paciente> findByPaciente(@Param("nome") String s);
 
-    //Optional<Paciente> findByName(String paciente);
+
+
 }

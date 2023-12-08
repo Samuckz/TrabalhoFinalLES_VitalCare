@@ -13,8 +13,10 @@ import clinica.medica.vitalcare.utils.exceptions.register.Medicos.RegisterValida
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.beans.Encoder;
 import java.util.List;
 
 @Service
@@ -44,16 +46,26 @@ public class MedicoService {
     @Autowired
     private List<RegisterValidation> validadoresFuncionario;
 
+    @Autowired
+    PasswordEncoder encoder;
 
-    public ResponseEntity<Medico> cadastrar(CadastrarMedicoDto dto) {
+
+    public ResponseEntity<ResponseMedicoDto> cadastrar(CadastrarMedicoDto dto) {
         validadoresMedico.forEach(v -> v.validar(dto));
         validadoresFuncionario.forEach(v -> v.validar(dto.funcionario()));
 
         var medico = new Medico(dto);
-        var user = new Usuario(dto.funcionario(), true);
+
+        var func_medico = medico.getFuncionario();
+
+        func_medico.setSenha(encoder.encode(func_medico.getSenha()));
+
+        medico.setFuncionario(func_medico);
+        var medicoDb = medicoRepository.save(medico);
+        var user = new Usuario(dto.funcionario(), medicoDb.getFuncionario().getSenha() , true, medicoDb.getId());
         usuarioRepository.save(user);
-        medicoRepository.save(medico);
-        return new ResponseEntity<>(medico, HttpStatus.CREATED);
+        var response = new ResponseMedicoDto(medicoDb.getId(), medicoDb.getFuncionario().getPessoa().getNome(), medicoDb.getEspecialidade());
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     public ResponseEntity<List<ResponseMedicoDto>> listarMedicos() {

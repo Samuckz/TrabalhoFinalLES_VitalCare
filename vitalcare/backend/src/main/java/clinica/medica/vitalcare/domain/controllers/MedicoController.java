@@ -17,7 +17,7 @@ public class MedicoController {
     MedicoService medicoService;
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<Medico> cadastrarMedico (@RequestBody CadastrarMedicoDto dto){
+    public ResponseEntity<ResponseMedicoDto> cadastrarMedico (@RequestBody CadastrarMedicoDto dto){
         return medicoService.cadastrar(dto);
     }
 

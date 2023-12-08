@@ -4,6 +4,7 @@ import clinica.medica.vitalcare.domain.models.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class TokenService {
                     .withSubject(usuario.getUsername())
                     .withClaim("id", usuario.getId())
                     .withClaim("isMedico", usuario.getIsMedico())
+                    .withClaim("medico", usuario.getMedicoId())
                     .withExpiresAt(dataExpiracao())
                     .sign(algoritmo); // assinatura da senha
 
@@ -52,6 +54,20 @@ public class TokenService {
         } catch (JWTCreationException exception){
             throw new RuntimeException("Token JWT inválido ou expirado: " + tokenJWT);
 
+        }
+    }
+
+    public Long getMedicoId(String tokenJWT) {
+        try {
+            var algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer(ISSUER)
+                    .build()
+                    .verify(tokenJWT)
+                    .getClaim("medico")
+                    .asLong();
+        } catch (JWTVerificationException exception) {
+            throw new RuntimeException("Token JWT inválido ou expirado: " + tokenJWT);
         }
     }
 
