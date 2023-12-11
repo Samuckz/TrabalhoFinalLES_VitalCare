@@ -7,6 +7,7 @@ import clinica.medica.vitalcare.domain.models.Usuario;
 import clinica.medica.vitalcare.domain.repositories.MedicoRepository;
 import clinica.medica.vitalcare.domain.repositories.PessoaRepository;
 import clinica.medica.vitalcare.domain.repositories.UsuarioRepository;
+import clinica.medica.vitalcare.utils.enums.Especialidade;
 import clinica.medica.vitalcare.utils.exceptions.register.Funcionario.RegisterValidation;
 import clinica.medica.vitalcare.utils.exceptions.register.Funcionario.UniqueEmailValidation;
 import clinica.medica.vitalcare.utils.exceptions.register.Medicos.RegisterValidationMedico;
@@ -74,6 +75,15 @@ public class MedicoService {
             return new ResponseMedicoDto(m.getId(), m.getFuncionario().getPessoa().getNome(), m.getEspecialidade());
         }).toList();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<ResponseMedicoDto>> listarMedicosPorEspecialidade(Especialidade especialidade) {
+        var medicos = medicoRepository.findAllByEspecialidade(especialidade);
+        var response = medicos.stream().map(m -> {
+            return new ResponseMedicoDto(m.getId(), m.getFuncionario().getPessoa().getNome(), m.getEspecialidade());
+        }).toList();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 //
 //    public ResponseEntity getMedicoById(Long id) {
