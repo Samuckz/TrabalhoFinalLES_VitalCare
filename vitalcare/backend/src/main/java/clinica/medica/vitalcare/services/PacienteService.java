@@ -6,6 +6,8 @@ import clinica.medica.vitalcare.domain.dtos.Paciente.PacienteResponseDto;
 import clinica.medica.vitalcare.domain.models.Paciente;
 import clinica.medica.vitalcare.domain.models.Pessoa;
 import clinica.medica.vitalcare.domain.repositories.PacienteRepository;
+import clinica.medica.vitalcare.utils.exceptions.register.Funcionario.RegisterValidation;
+import clinica.medica.vitalcare.utils.exceptions.register.Paciente.RegisterValidationPaciente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,11 @@ public class PacienteService {
     @Autowired
     PacienteRepository pacienteRepository;
 
+    @Autowired
+    private List<RegisterValidationPaciente> validadoresPaciente;
+
     public ResponseEntity<Paciente> cadastrar(CadastrarPacienteDto dto) {
+        validadoresPaciente.forEach(v -> v.validar(dto));
         var paciente = new Paciente(dto);
         pacienteRepository.save(paciente);
         return new ResponseEntity<Paciente>(paciente, HttpStatus.CREATED);
@@ -127,4 +133,7 @@ public class PacienteService {
         return new ResponseEntity("Paciente deletado com sucesso!", HttpStatus.OK);
 
     }
+
+
+
 }
